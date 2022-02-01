@@ -1,5 +1,5 @@
 # bettercmd
-C++ practice, it's pretty much useless
+Actually worse than cmd
 # commands
 ls <br/>
 cwd </br>
