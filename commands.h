@@ -1,3 +1,6 @@
 #pragma once
-void cd(int argc, const char* argv);
+#include <vector>
+void cd(int argc, std::vector<const char*> argv);
 void ls();
+void mkdir(int argc, std::vector<const char*> argv);
+void help();

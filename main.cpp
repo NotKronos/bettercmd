@@ -4,6 +4,7 @@
 #include <vector>
 #include <filesystem>
 #include <windows.h>
+#include <sstream>
 
 namespace filesystem = std::filesystem;
 
@@ -15,29 +16,40 @@ int main() {
 		if (command == "exit") {
 			exit(0);
 		}
-		if (command.rfind("cwd", 0) == 0) {
-			int counter = 1;
+		else if (command.rfind("cwd", 0) == 0) {
+			std::vector <const char*> argv;
+			command.erase(0, 4);
 			std::string delimiter = " ";
-
 			size_t pos = 0;
 			std::string token;
 			while ((pos = command.find(delimiter)) != std::string::npos) {
 				token = command.substr(0, pos);
 				command.erase(0, pos + delimiter.length());
-				counter++;
+				argv.push_back(token.c_str());
 			}
-			if (counter > 2) {
-				std::cout << "Too many arguments" << std::endl;
-			}
-			else if (counter< 2) {
-				std::cout << "Not enough arguments" << std::endl;
-			}
-			else {
-				cd(1, command.c_str());
-			}
+			argv.push_back(command.c_str());
+			cd(argv.size(), argv);
 		}
-		if (command == "ls") {
+		else if (command == "ls") {
 			ls();
+		}
+		else if (command.rfind("makedir", 0) == 0) {
+			try {
+				std::vector <const char*> argv;
+				command.erase(0, 4);
+				std::string delimiter = " ";
+				size_t pos = 0;
+				std::string token;
+				while ((pos = command.find(delimiter)) != std::string::npos) {
+					token = command.substr(0, pos);
+					command.erase(0, pos + delimiter.length());
+					argv.push_back(token.c_str());
+				}
+				mkdir(argv.size(), argv);
+			}
+			catch (const std::exception &e) {
+				std::cout << e.what() << std::endl;
+			}
 		}
 		else {
 			system(command.c_str());

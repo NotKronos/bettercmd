@@ -2,6 +2,7 @@
 #include <iostream>
 #include <filesystem>
 #include <Windows.h>
+#include <vector>
 
 namespace filesystem = std::filesystem;
 
@@ -14,9 +15,18 @@ bool endsWith(std::string const& fullString, std::string const& ending) {
 	}
 }
 
-void cd(int argc, const char* argv) {
+void cd(int argc, std::vector<const char*> argv) {
+	if (argc > 1) {
+		std::cout << "Too many arguments" << std::endl;
+		return;
+	}
+	else if (argc < 1) {
+		std::cout << "Not enough arguments" << std::endl;
+		return;
+	}
 	std::string path = filesystem::current_path().string();
-	std::string argument(argv);
+	std::string argument(argv[0]);
+	std::cout << argument << std::endl;
 	if (argument.rfind("..", 0) == 0) {
 		filesystem::current_path(argument);
 	}
@@ -49,4 +59,33 @@ void ls() {
 
 	}
 	SetConsoleTextAttribute(hConsole, 15);
+}
+
+void mkdir(int argc, std::vector<const char*> argv) {
+	if (argc < 1) {
+		std::cout << "Not enough arguments" << std::endl;
+	}
+	else if (argc == 1) {
+		if (filesystem::create_directory(argv[0])) {
+			std::cout << "created directory: " << argv[0] << std::endl;
+		}
+		else {
+			std::cout << "Cannot create directory: " << argv[0] << std::endl;
+		}
+	} 
+	else {
+		for (int i = 0; i < argc; i++) {
+			if (filesystem::create_directory(argv[i])) {
+				std::cout << "created directory: " << argv[i] << std::endl;
+			}
+			else {
+				std::cout << "Cannot create directory: " << argv[i] << std::endl;
+			}
+		}
+	}
+}
+
+void help() {
+	std::cout << "ls" << std::endl;
+	std::cout << "cwd [DIR]" << std::endl;
 }
