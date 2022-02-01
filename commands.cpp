@@ -88,4 +88,5 @@ void mkdir(int argc, std::vector<const char*> argv) {
 void help() {
 	std::cout << "ls" << std::endl;
 	std::cout << "cwd [DIR]" << std::endl;
+	std::cout << "makedir [DIR]" << std::endl;
 }
