@@ -18,7 +18,7 @@ std::string Terminal::username() {
 		std::cout << "ERROR: Cannot get username";
 		exit(0);
 	}
-	return username;
+	return "test";
 }
 
 std::string Terminal::hostname() {
@@ -28,7 +28,7 @@ std::string Terminal::hostname() {
 		std::cout << "ERROR: Cannot get hostname";
 		exit(0);
 	}
-	return infoBuf;
+	return "test";
 }
 
 void Terminal::prompt() {

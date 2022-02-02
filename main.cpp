@@ -45,11 +45,27 @@ int main() {
 					command.erase(0, pos + delimiter.length());
 					argv.push_back(token.c_str());
 				}
+				argv.push_back(command.c_str());
+				std::cout << argv[1] << std::endl;
 				mkdir(argv.size(), argv);
 			}
 			catch (const std::exception &e) {
 				std::cout << e.what() << std::endl;
 			}
+		}
+		else if (command.rfind("removedir", 0) == 0) {
+			std::vector <const char*> argv;
+			command.erase(0, 9);
+			std::string delimiter = " ";
+			size_t pos = 0;
+			std::string token;
+			while ((pos = command.find(delimiter)) != std::string::npos) {
+				token = command.substr(0, pos);
+				command.erase(0, pos + delimiter.length());
+				argv.push_back(token.c_str());
+			}
+			argv.push_back(command.c_str());
+			rmdir(argv.size(), argv);
 		}
 		else if (command == "help") {
 			help();

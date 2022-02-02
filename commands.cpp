@@ -62,19 +62,19 @@ void ls() {
 }
 
 void mkdir(int argc, std::vector<const char*> argv) {
-	if (argc < 1) {
+	if (argc < 2) {
 		std::cout << "Not enough arguments" << std::endl;
 	}
-	else if (argc == 1) {
-		if (filesystem::create_directory(argv[0])) {
-			std::cout << "created directory: " << argv[0] << std::endl;
+	else if (argc == 2) {
+		if (filesystem::create_directory(argv[1])) {
+			std::cout << "created directory: " << argv[1] << std::endl;
 		}
 		else {
-			std::cout << "Cannot create directory: " << argv[0] << std::endl;
+			std::cout << "Cannot create directory: " << argv[1] << std::endl;
 		}
-	} 
+	}
 	else {
-		for (int i = 0; i < argc; i++) {
+		for (int i = 1; i < argc; i++) {
 			if (filesystem::create_directory(argv[i])) {
 				std::cout << "created directory: " << argv[i] << std::endl;
 			}
@@ -85,8 +85,77 @@ void mkdir(int argc, std::vector<const char*> argv) {
 	}
 }
 
+void rmdir(int argc, std::vector<const char*> argv) {
+	bool rmAll = false;
+	if (argc < 2) {
+		std::cout << "Not enough arguments" << std::endl;
+	}
+	else if (argc == 2) {
+		try {
+			if (filesystem::is_directory(argv[1])) {
+				if (filesystem::remove(argv[1])) {
+					std::cout << "Removed directory: " << argv[1] << std::endl;
+				}
+				else {
+					std::cout << "Cannot remove directory: " << argv[1] << std::endl;
+				}
+			}
+			else {
+				std::cout << "Failed to remove " << argv[1] << " not a directory" << std::endl;
+			}
+		}
+		catch (std::exception &e) {
+			std::cout << e.what() << std::endl;
+		}
+	}
+	else {
+		for (int i = 0; i < argc; i++) {
+			if (argv[i] == "-R") {
+				rmAll = true;
+			}
+			else {
+				try {
+					if (filesystem::is_directory(argv[i])) {
+						if (filesystem::remove(argv[i])) {
+							std::cout << "Removed directory: " << argv[i] << std::endl;
+						}
+						else {
+							std::cout << "Cannot remove directory: " << argv[i] << std::endl;
+						}
+					}
+					else {
+						std::cout << "Failed to remove " << argv[i] << " not a directory" << std::endl;
+					}
+				}
+				catch (std::exception& e) {
+					std::cout << e.what() << std::endl;
+				}
+			}
+			if (rmAll == true && i == 2) {
+				try {
+					if (filesystem::is_directory(argv[i])) {
+						if (filesystem::remove_all(argv[i])) {
+							std::cout << "Removed directory: " << argv[i] << std::endl;
+						}
+						else {
+							std::cout << "Cannot remove directory: " << argv[i] << std::endl;
+						}
+					}
+					else {
+						std::cout << "Failed to remove " << argv[i] << " Not a directory" << std::endl;
+					}
+				}
+				catch (std::exception& e) {
+					std::cout << e.what() << std::endl;
+				}
+			}
+		}
+	}
+}
+
 void help() {
 	std::cout << "ls" << std::endl;
 	std::cout << "cwd [DIR]" << std::endl;
 	std::cout << "makedir [DIR]" << std::endl;
+	std::cout << "removedir [DIR]" << std::endl;
 }
