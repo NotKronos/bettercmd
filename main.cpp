@@ -51,6 +51,9 @@ int main() {
 				std::cout << e.what() << std::endl;
 			}
 		}
+		else if (command == "help") {
+			help();
+		}
 		else {
 			system(command.c_str());
 		}
