@@ -36,7 +36,7 @@ int main() {
 		else if (command.rfind("makedir", 0) == 0) {
 			try {
 				std::vector <const char*> argv;
-				command.erase(0, 4);
+				command.erase(0, 7);
 				std::string delimiter = " ";
 				size_t pos = 0;
 				std::string token;
