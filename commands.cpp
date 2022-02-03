@@ -87,6 +87,7 @@ void mkdir(int argc, std::vector<const char*> argv) {
 
 void rmdir(int argc, std::vector<const char*> argv) {
 	bool rmAll = false;
+	std::string recursive = "-R";
 	if (argc < 2) {
 		std::cout << "Not enough arguments" << std::endl;
 	}
@@ -109,11 +110,11 @@ void rmdir(int argc, std::vector<const char*> argv) {
 		}
 	}
 	else {
-		for (int i = 0; i < argc; i++) {
-			if (argv[i] == "-R") {
+		for (int i = 1; i < argc; i++) {
+			if (strcmp(argv[i], recursive.c_str()) == 0) {
 				rmAll = true;
 			}
-			else {
+			else if (rmAll == false) {
 				try {
 					if (filesystem::is_directory(argv[i])) {
 						if (filesystem::remove(argv[i])) {
@@ -131,7 +132,7 @@ void rmdir(int argc, std::vector<const char*> argv) {
 					std::cout << e.what() << std::endl;
 				}
 			}
-			if (rmAll == true && i == 2) {
+			else if (rmAll == true && i == 2) {
 				try {
 					if (filesystem::is_directory(argv[i])) {
 						if (filesystem::remove_all(argv[i])) {
