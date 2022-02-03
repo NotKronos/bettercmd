@@ -46,7 +46,6 @@ int main() {
 					argv.push_back(token.c_str());
 				}
 				argv.push_back(command.c_str());
-				std::cout << argv[1] << std::endl;
 				mkdir(argv.size(), argv);
 			}
 			catch (const std::exception &e) {

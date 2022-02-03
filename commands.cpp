@@ -26,7 +26,6 @@ void cd(int argc, std::vector<const char*> argv) {
 	}
 	std::string path = filesystem::current_path().string();
 	std::string argument(argv[0]);
-	std::cout << argument << std::endl;
 	if (argument.rfind("..", 0) == 0) {
 		filesystem::current_path(argument);
 	}
